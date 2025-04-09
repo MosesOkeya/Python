@@ -1,0 +1,86 @@
+# Task 1: Load and Explore the Dataset
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Iris dataset
+df = sns.load_dataset('iris')
+
+# Display the first few rows
+print("First 5 rows of the dataset:")
+print(df.head())
+
+# Check data types and missing values
+print("\nDataset info:")
+print(df.info())
+
+print("\nMissing values per column:")
+print(df.isnull().sum())
+
+# Clean the dataset (drop missing values if any)
+df_clean = df.dropna()
+
+
+
+
+
+# Task 2: Basic Data Analysis
+
+# Basic statistics
+print("\nBasic statistics:")
+print(df_clean.describe())
+
+# Group by species and compute mean of numerical columns
+print("\nMean values grouped by species:")
+print(df_clean.groupby('species').mean())
+
+# Example finding
+print("\nInteresting finding:")
+print("Virginica species tends to have the highest average petal length.")
+
+
+
+
+
+# Task 3: Data Visualization
+
+# Set style
+sns.set(style="whitegrid")
+
+# 1. Line Chart - simulate trend by cumulative sum
+df_clean['petal_length_cumsum'] = df_clean['petal_length'].cumsum()
+plt.figure(figsize=(10,5))
+plt.plot(df_clean['petal_length_cumsum'], label='Cumulative Petal Length')
+plt.title('Trend of Cumulative Petal Length')
+plt.xlabel('Index')
+plt.ylabel('Cumulative Petal Length')
+plt.legend()
+plt.show()
+
+# 2. Bar Chart - average petal length per species
+species_avg = df_clean.groupby('species')['petal_length'].mean().reset_index()
+plt.figure(figsize=(8,5))
+sns.barplot(x='species', y='petal_length', data=species_avg)
+plt.title('Average Petal Length per Species')
+plt.ylabel('Petal Length')
+plt.xlabel('Species')
+plt.show()
+
+# 3. Histogram - distribution of sepal width
+plt.figure(figsize=(8,5))
+plt.hist(df_clean['sepal_width'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribution of Sepal Width')
+plt.xlabel('Sepal Width')
+plt.ylabel('Frequency')
+plt.show()
+
+# 4. Scatter Plot - sepal length vs petal length
+plt.figure(figsize=(8,5))
+sns.scatterplot(x='sepal_length', y='petal_length', hue='species', data=df_clean)
+plt.title('Sepal Length vs Petal Length')
+plt.xlabel('Sepal Length')
+plt.ylabel('Petal Length')
+plt.legend()
+plt.show()
+
